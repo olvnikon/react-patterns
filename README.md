@@ -80,6 +80,12 @@ directly, does not call selectors directly, and does not know action names.
 Redux Toolkit actions, selectors, and async workflow details stay behind the
 adapter and feature model.
 
+Reports uses the same adapter principle in a smaller form. `ReportsEntry`
+calls `useReports()` and passes view-ready state plus callbacks into
+`ReportsView`. Order Approval remains the main Feature Facade + React Adapter
+example; Reports uses a lightweight React Adapter so its injected route state
+does not leak Redux selectors or dispatch calls into UI components.
+
 ## redux-observable Dependencies
 
 The Order Approval workflow now demonstrates redux-observable dependencies.
