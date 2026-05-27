@@ -23,6 +23,17 @@ export function OrdersRoute() {
       }
       centerContent={
         <CenterContent>
+          <section className="route-note" aria-label="Orders route pattern">
+            <div className="pattern-tags">
+              <span className="pattern-tag">Flat composition</span>
+              <span className="pattern-tag">Slot layout</span>
+              <span className="pattern-tag">Public feature entries</span>
+            </div>
+            <p>
+              This route composes the left, center, and right workspace regions
+              directly.
+            </p>
+          </section>
           <OrdersEntry
             selectedDeskId={selectedDeskId}
             selectedPortfolioId={selectedPortfolioId}

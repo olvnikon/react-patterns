@@ -22,6 +22,11 @@ export function OrderApprovalView({ orderId }: OrderApprovalViewProps) {
         <p className="eyebrow">Approval</p>
         <h1>Order Approval</h1>
       </div>
+      <div className="pattern-tags" aria-label="Approval patterns">
+        <span className="pattern-tag">Feature Facade + React Adapter</span>
+        <span className="pattern-tag">redux-observable dependencies</span>
+        <span className="pattern-tag">Mock repository</span>
+      </div>
       <OrderSummaryPanel state={state} />
       <article className="workspace-panel">
         <h2>Review Decision</h2>

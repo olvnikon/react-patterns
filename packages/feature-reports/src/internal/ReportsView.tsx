@@ -24,6 +24,11 @@ export function ReportsView({
         <p className="eyebrow">Reports</p>
         <h1>Reports Workspace</h1>
       </div>
+      <div className="pattern-tags" aria-label="Reports patterns">
+        <span className="pattern-tag">Lazy route</span>
+        <span className="pattern-tag">Injected reducer</span>
+        <span className="pattern-tag">Lightweight React Adapter</span>
+      </div>
       <div className="workspace-grid">
         <ReportFilters
           selectedReportType={state.selectedReportType}

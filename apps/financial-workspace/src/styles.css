@@ -117,6 +117,36 @@ select {
   text-transform: uppercase;
 }
 
+.pattern-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pattern-tag {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0 9px;
+  border: 1px solid #bad7c6;
+  border-radius: 999px;
+  color: #244a35;
+  background: #edf8f1;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.route-note {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid #d8dee6;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -157,6 +187,10 @@ select {
 .workspace-panel {
   display: grid;
   gap: 12px;
+}
+
+.workspace-panel .pattern-tags {
+  justify-content: flex-start;
 }
 
 .workspace-panel dl {
