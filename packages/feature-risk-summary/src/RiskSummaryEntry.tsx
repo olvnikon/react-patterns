@@ -8,7 +8,20 @@ export function RiskSummaryEntry({
   return (
     <article className="workspace-panel">
       <h2>Risk Summary</h2>
-      <p>Generic placeholder metrics for {selectedPortfolioId}.</p>
+      <dl>
+        <div>
+          <dt>Portfolio</dt>
+          <dd>{selectedPortfolioId}</dd>
+        </div>
+        <div>
+          <dt>Review level</dt>
+          <dd>Normal</dd>
+        </div>
+        <div>
+          <dt>Exposure band</dt>
+          <dd>Demo</dd>
+        </div>
+      </dl>
     </article>
   );
 }

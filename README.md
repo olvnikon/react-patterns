@@ -35,6 +35,33 @@ Avoid deep imports such as:
 import { SomethingInternal } from '@demo/feature-orders/src/internal/SomethingInternal';
 ```
 
+## Flat Application Composition
+
+The `/orders` route demonstrates Flat Application Composition. The route owns
+the mocked workspace context:
+
+```txt
+selectedDeskId: DESK-GLOBAL
+selectedPortfolioId: PF-001
+userId: USR-DEMO
+```
+
+It passes that data directly to the feature entries that need it and gives the
+layout package only React-node slots:
+
+```tsx
+<WorkspaceLayout
+  leftNav={<LeftNav>{/* portfolio summary */}</LeftNav>}
+  centerContent={<CenterContent>{/* orders workspace */}</CenterContent>}
+  rightContent={<RightContent>{/* risk + activity */}</RightContent>}
+/>
+```
+
+Build the application, not wrapper trees: route components should show the
+meaningful application sections, while layout components arrange regions only.
+`@demo/ui-layouts` is business-agnostic and does not import orders, portfolios,
+reports, approvals, risk, or activity feed features.
+
 ## Package Map
 
 | Package | Public API |
@@ -65,7 +92,7 @@ import { SomethingInternal } from '@demo/feature-orders/src/internal/SomethingIn
 | Pattern | Current preparation |
 | --- | --- |
 | Feature Modules with Public API | All packages expose a small `src/index.ts` contract. |
-| Flat Application Composition | Layout components are separate from feature packages. |
+| Flat Application Composition | `/orders` composes feature entries into layout slots. |
 | Feature Facade + React Adapter | Reserved for the Order Approval feature in a later phase. |
 | redux-observable dependencies | Reserved for the Order Approval async flow in a later phase. |
 | replaceReducer / injectReducer | Reserved for the Reports route in a later phase. |
