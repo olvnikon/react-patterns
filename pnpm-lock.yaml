@@ -147,9 +147,21 @@ importers:
 
   packages/feature-reports:
     dependencies:
+      '@demo/shared-formatting':
+        specifier: workspace:*
+        version: link:../shared-formatting
+      '@reduxjs/toolkit':
+        specifier: 2.2.1
+        version: 2.2.1(react-redux@9.1.0(@types/react@18.2.64)(react@18.2.0)(redux@5.0.1))(react@18.2.0)
       react:
         specifier: '>=18.2.0'
         version: 18.2.0
+      react-redux:
+        specifier: 9.1.0
+        version: 9.1.0(@types/react@18.2.64)(react@18.2.0)(redux@5.0.1)
+      redux:
+        specifier: 5.0.1
+        version: 5.0.1
 
   packages/feature-risk-summary:
     dependencies:

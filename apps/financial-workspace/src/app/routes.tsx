@@ -8,7 +8,6 @@ import {
 import { DashboardRoute } from '../routes/DashboardRoute';
 import { OrderApprovalRoute } from '../routes/OrderApprovalRoute';
 import { OrdersRoute } from '../routes/OrdersRoute';
-import { ReportsRoute } from '../routes/ReportsRoute';
 
 function RootLayout() {
   return (
@@ -61,7 +60,15 @@ export const router = createBrowserRouter([
       },
       {
         path: 'reports',
-        element: <ReportsRoute />,
+        lazy: async () => {
+          const reportsRoute = await import('../routes/ReportsRoute');
+
+          reportsRoute.injectReportsReducer();
+
+          return {
+            Component: reportsRoute.ReportsRoute,
+          };
+        },
       },
     ],
   },

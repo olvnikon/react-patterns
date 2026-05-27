@@ -1,24 +1,46 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ReportsView } from './internal/ReportsView';
+import { selectReportsView } from './model/reportsSelectors';
+import {
+  reportsGenerateRequested,
+  reportsGenerateSucceeded,
+  reportsPortfolioFilterChanged,
+  reportsReportTypeChanged,
+  reportsReset,
+  type ReportType,
+} from './model/reportsSlice';
+
 export function ReportsEntry() {
+  const dispatch = useDispatch();
+  const reportsState = useSelector(selectReportsView);
+
+  useEffect(() => {
+    if (reportsState.generationStatus !== 'generating') {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      dispatch(reportsGenerateSucceeded());
+    }, 250);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [dispatch, reportsState.generationStatus]);
+
   return (
-    <section className="page-section">
-      <div>
-        <p className="eyebrow">Reports</p>
-        <h1>Reports Workspace</h1>
-      </div>
-      <article className="workspace-panel">
-        <h2>Monthly Exposure Report</h2>
-        <p>Saved report shell with mocked local placeholder data.</p>
-        <ul className="placeholder-list">
-          <li>
-            <span>Portfolio filter</span>
-            <strong>PF-001</strong>
-          </li>
-          <li>
-            <span>Status</span>
-            <strong>Ready</strong>
-          </li>
-        </ul>
-      </article>
-    </section>
+    <ReportsView
+      state={reportsState}
+      onReportTypeChange={(reportType: ReportType) =>
+        dispatch(reportsReportTypeChanged(reportType))
+      }
+      onPortfolioFilterChange={(portfolioId) =>
+        dispatch(reportsPortfolioFilterChanged(portfolioId))
+      }
+      onGenerate={() => dispatch(reportsGenerateRequested())}
+      onReset={() => dispatch(reportsReset())}
+    />
   );
 }

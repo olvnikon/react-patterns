@@ -102,6 +102,32 @@ without real HTTP or endpoints. Epics orchestrate action-driven async workflows;
 redux-observable is used here for workflow orchestration, not as a default
 server-state cache.
 
+## replaceReducer / injectReducer
+
+The `/reports` route demonstrates route-level reducer injection. The store keeps
+`orderApproval` in the static reducer map, while the Reports reducer stays out
+of the initial reducer setup.
+
+`replaceReducer` is Redux's low-level API for swapping the current root reducer.
+`injectReducer` is the app helper built on top of it. The app store keeps an
+`asyncReducers` dictionary, rebuilds the root reducer with
+`createReducer(asyncReducers)`, and calls `store.replaceReducer(...)` when a new
+route reducer is registered.
+
+The Reports route is lazy-loaded, and that route-loading flow injects
+`reportsReducer` before rendering `ReportsEntry`. Lazy route loading and reducer
+injection are related but different:
+
+```txt
+lazy route loading: delay loading route UI code
+injectReducer: register route-owned Redux state when the route loads
+```
+
+Reducer injection does not automatically clear route state. This demo keeps the
+Reports state after the first `/reports` visit. Cleanup, reset-on-enter, and
+reducer removal are separate strategies; the Reports UI includes a local reset
+action to make explicit cleanup visible without adding reducer removal.
+
 ## Package Map
 
 | Package | Public API |
@@ -110,7 +136,7 @@ server-state cache.
 | `@demo/feature-dashboard` | `DashboardEntry` |
 | `@demo/feature-orders` | `OrdersEntry` |
 | `@demo/feature-order-approval` | `OrderApprovalEntry`, `orderApprovalReducerKey`, `orderApprovalReducer`, `orderApprovalEpic`, approval state/dependency types |
-| `@demo/feature-reports` | `ReportsEntry` |
+| `@demo/feature-reports` | `ReportsEntry`, `reportsReducerKey`, `reportsReducer`, reports state types |
 | `@demo/feature-portfolio-summary` | `PortfolioSummaryEntry` |
 | `@demo/feature-risk-summary` | `RiskSummaryEntry` |
 | `@demo/feature-activity-feed` | `ActivityFeedEntry` |
@@ -125,7 +151,7 @@ server-state cache.
 | `/` | `DashboardEntry` |
 | `/orders` | `OrdersEntry` |
 | `/orders/:orderId/approval` | `OrderApprovalEntry` |
-| `/reports` | `ReportsEntry` |
+| `/reports` | Lazy `ReportsRoute` injects `reportsReducer`, then renders `ReportsEntry` |
 
 ## Pattern Roadmap
 
@@ -135,7 +161,7 @@ server-state cache.
 | Flat Application Composition | `/orders` composes feature entries into layout slots. |
 | Feature Facade + React Adapter | `/orders/:orderId/approval` uses `useOrderApproval`. |
 | redux-observable dependencies | App store epic middleware plus the Order Approval epic. |
-| replaceReducer / injectReducer | Reserved for the Reports route in a later phase. |
+| replaceReducer / injectReducer | `/reports` lazy route injects the Reports reducer. |
 
 Plugin / Extension Points are intentionally not implemented in this showcase.
 
