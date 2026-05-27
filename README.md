@@ -62,6 +62,25 @@ meaningful application sections, while layout components arrange regions only.
 `@demo/ui-layouts` is business-agnostic and does not import orders, portfolios,
 reports, approvals, risk, or activity feed features.
 
+## Feature Facade + React Adapter
+
+The `/orders/:orderId/approval` route demonstrates the Feature Facade + React
+Adapter pattern through `@demo/feature-order-approval`.
+
+The public feature entry is `OrderApprovalEntry`. Inside the package,
+`useOrderApproval(orderId)` is the React Adapter. It hides Redux Toolkit actions,
+selectors, and state shape from the approval UI and exposes a feature-level API:
+
+```ts
+const { state, api } = useOrderApproval(orderId);
+```
+
+The UI consumes only `state` and `api`. It does not call Redux `dispatch`
+directly, does not call selectors directly, and does not know action names. In
+this phase, approval and rejection are simple synchronous reducer transitions
+using mocked local data. Async epics and redux-observable dependencies are
+intentionally reserved for Phase 5.
+
 ## Package Map
 
 | Package | Public API |
@@ -93,7 +112,7 @@ reports, approvals, risk, or activity feed features.
 | --- | --- |
 | Feature Modules with Public API | All packages expose a small `src/index.ts` contract. |
 | Flat Application Composition | `/orders` composes feature entries into layout slots. |
-| Feature Facade + React Adapter | Reserved for the Order Approval feature in a later phase. |
+| Feature Facade + React Adapter | `/orders/:orderId/approval` uses `useOrderApproval`. |
 | redux-observable dependencies | Reserved for the Order Approval async flow in a later phase. |
 | replaceReducer / injectReducer | Reserved for the Reports route in a later phase. |
 

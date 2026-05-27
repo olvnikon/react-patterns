@@ -196,6 +196,58 @@ select {
   border-top: 1px solid #e3e8ee;
 }
 
+.form-field {
+  display: grid;
+  gap: 8px;
+}
+
+.form-field span {
+  color: #384252;
+  font-weight: 700;
+}
+
+.form-field textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 12px;
+  border: 1px solid #c9d2dc;
+  border-radius: 8px;
+  color: #1c2430;
+  background: #ffffff;
+}
+
+.approval-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.approval-actions button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #b7c3d0;
+  border-radius: 8px;
+  color: #1c2430;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.approval-actions button:disabled {
+  color: #8994a3;
+  cursor: not-allowed;
+  background: #eef1f4;
+}
+
+.approval-actions span,
+.error-message {
+  color: #5d6876;
+}
+
+.error-message {
+  font-weight: 700;
+}
+
 .workspace-layout {
   display: grid;
   grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) minmax(220px, 280px);
