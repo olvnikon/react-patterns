@@ -8,5 +8,8 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts"
     }
+  },
+  "dependencies": {
+    "@demo/shared-types": "workspace:*"
   }
 }

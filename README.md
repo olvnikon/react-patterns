@@ -76,10 +76,31 @@ const { state, api } = useOrderApproval(orderId);
 ```
 
 The UI consumes only `state` and `api`. It does not call Redux `dispatch`
-directly, does not call selectors directly, and does not know action names. In
-this phase, approval and rejection are simple synchronous reducer transitions
-using mocked local data. Async epics and redux-observable dependencies are
-intentionally reserved for Phase 5.
+directly, does not call selectors directly, and does not know action names.
+Redux Toolkit actions, selectors, and async workflow details stay behind the
+adapter and feature model.
+
+## redux-observable Dependencies
+
+The Order Approval workflow now demonstrates redux-observable dependencies.
+The app store creates mocked dependencies in
+`apps/financial-workspace/src/app/store/appDependencies.ts` and passes them to
+`createEpicMiddleware({ dependencies })`.
+
+`@demo/feature-order-approval` owns the approval epic. The epic receives
+`orderApprovalRepository`, `logger`, and `clock` as the third argument:
+
+```ts
+(action$, state$, dependencies) => {
+  // orchestrate mocked approval workflows
+}
+```
+
+The repository is local, fake, and exported from `@demo/shared-api`. It
+simulates loading approval details, approving an order, and rejecting an order
+without real HTTP or endpoints. Epics orchestrate action-driven async workflows;
+redux-observable is used here for workflow orchestration, not as a default
+server-state cache.
 
 ## Package Map
 
@@ -88,14 +109,14 @@ intentionally reserved for Phase 5.
 | `@demo/ui-layouts` | `AppShell`, `WorkspaceLayout`, `LeftNav`, `CenterContent`, `RightContent` |
 | `@demo/feature-dashboard` | `DashboardEntry` |
 | `@demo/feature-orders` | `OrdersEntry` |
-| `@demo/feature-order-approval` | `OrderApprovalEntry` |
+| `@demo/feature-order-approval` | `OrderApprovalEntry`, `orderApprovalReducerKey`, `orderApprovalReducer`, `orderApprovalEpic`, approval state/dependency types |
 | `@demo/feature-reports` | `ReportsEntry` |
 | `@demo/feature-portfolio-summary` | `PortfolioSummaryEntry` |
 | `@demo/feature-risk-summary` | `RiskSummaryEntry` |
 | `@demo/feature-activity-feed` | `ActivityFeedEntry` |
 | `@demo/shared-types` | Generic demo ID, money, currency, and status types |
 | `@demo/shared-formatting` | `formatDate`, `formatMoney`, `formatStatus` |
-| `@demo/shared-api` | Mock-only repository/logger/clock placeholders and `delay` |
+| `@demo/shared-api` | Mock-only order approval repository, reports repository placeholder, logger, clock, and `delay` |
 
 ## Current Routes
 
@@ -113,7 +134,7 @@ intentionally reserved for Phase 5.
 | Feature Modules with Public API | All packages expose a small `src/index.ts` contract. |
 | Flat Application Composition | `/orders` composes feature entries into layout slots. |
 | Feature Facade + React Adapter | `/orders/:orderId/approval` uses `useOrderApproval`. |
-| redux-observable dependencies | Reserved for the Order Approval async flow in a later phase. |
+| redux-observable dependencies | App store epic middleware plus the Order Approval epic. |
 | replaceReducer / injectReducer | Reserved for the Reports route in a later phase. |
 
 Plugin / Extension Points are intentionally not implemented in this showcase.

@@ -5,7 +5,6 @@ import {
   orderApprovalApproveRequested,
   orderApprovalCommentChanged,
   orderApprovalLoadRequested,
-  orderApprovalLoadSucceeded,
   orderApprovalRejectRequested,
   orderApprovalReset,
 } from '../model/orderApprovalSlice';
@@ -34,7 +33,6 @@ export function useOrderApproval(orderId: string): UseOrderApprovalResult {
 
   const load = useCallback(() => {
     dispatch(orderApprovalLoadRequested({ orderId }));
-    dispatch(orderApprovalLoadSucceeded({ orderId }));
   }, [dispatch, orderId]);
 
   const updateComment = useCallback(

@@ -1,8 +1,10 @@
-export { createMockClock } from './createMockClock';
-export { createMockLogger } from './createMockLogger';
+export { createMockClock, type MockClock } from './createMockClock';
+export { createMockLogger, type MockLogger } from './createMockLogger';
 export {
   createMockOrderApprovalRepository,
+  type OrderApprovalDetails,
   type OrderApprovalRepository,
+  type OrderApprovalResult,
 } from './createMockOrderApprovalRepository';
 export {
   createMockReportsRepository,

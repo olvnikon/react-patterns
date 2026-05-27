@@ -4,6 +4,7 @@ export type OrderApprovalStatus =
   | 'idle'
   | 'loading'
   | 'ready'
+  | 'saving'
   | 'approved'
   | 'rejected'
   | 'failed';
@@ -14,6 +15,7 @@ export type OrderApprovalRecord = {
   amount: Money;
   status: OrderApprovalStatus;
   comment: string;
+  completedAt?: string;
   errorMessage?: string;
 };
 
