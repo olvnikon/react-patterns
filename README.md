@@ -33,7 +33,7 @@ Routes:
 | --- | --- | --- |
 | Feature Modules with Public API | `packages/feature-*`, `packages/shared-*`, `packages/ui-layouts` | Each package exposes `src/index.ts`; app imports package roots only. |
 | Flat Application Composition | `apps/financial-workspace/src/routes/OrdersRoute.tsx` | The route directly composes left, center, and right feature entries into layout slots. |
-| Feature Facade + React Adapter | `packages/feature-order-approval/src/react/useOrderApproval.ts` | UI consumes `state + api`; Redux action and selector details stay inside the adapter. |
+| Feature Facade + React Adapter | `packages/feature-order-approval/src/react/useOrderApproval.ts`; optional sub-example in `packages/feature-workspace-status/src/react/useWorkspaceStatus.ts` | Order Approval is Redux-backed. Workspace Status shows a tiny plain external-store adapter using `useSyncExternalStore`. |
 | redux-observable dependencies | `apps/financial-workspace/src/app/store/appDependencies.ts`, `packages/feature-order-approval/src/model/orderApprovalEpic.ts` | Epics receive repository, logger, and clock through the third argument. |
 | replaceReducer / injectReducer | `apps/financial-workspace/src/app/store/createReducer.ts`, `apps/financial-workspace/src/routes/ReportsRoute.tsx` | Reports reducer is not static; it is injected when the lazy Reports route loads. |
 
@@ -59,6 +59,7 @@ packages/
   feature-orders/
   feature-order-approval/
   feature-reports/
+  feature-workspace-status/
   feature-portfolio-summary/
   feature-risk-summary/
   feature-activity-feed/
@@ -144,6 +145,32 @@ The UI does not call Redux `dispatch`, selectors, or action creators directly. R
 
 Reports uses the same adapter principle in a smaller form. `ReportsEntry` calls `useReports()` and passes view-ready state plus callbacks into `ReportsView`, keeping injected route-state wiring out of presentational components.
 
+## Pure External-Store Facade Demo
+
+Workspace Status is an optional educational sub-example of Feature Facade + React Adapter. It does not replace the Redux-backed Order Approval implementation.
+
+`packages/feature-workspace-status` owns a tiny plain TypeScript external store:
+
+```txt
+createWorkspaceStatusStore()
+  getSnapshot()
+  subscribe(listener)
+  setSessionStatus()
+  setConnectionStatus()
+  refresh()
+```
+
+The React adapter, `useWorkspaceStatus()`, uses `useSyncExternalStore` because the store lives outside React. It exposes:
+
+```txt
+state: sessionStatus, connectionStatus, lastUpdatedAt, message
+api: setOpen, setPaused, setClosed, simulateReconnect, refresh
+```
+
+`WorkspaceStatusView` receives state and callbacks through props. It does not import the store, call `useSyncExternalStore`, use Redux hooks, or know store internals.
+
+This style is included only to show the pure external-store variant. In real applications, use it when integrating a non-React external source such as a platform service, browser API, WebSocket status, RxJS-like source, or vanilla store. Do not use it merely to avoid Redux or normal React state. Redux-backed features do not need `useSyncExternalStore` directly because React-Redux handles subscriptions internally.
+
 ## redux-observable Dependencies
 
 The Order Approval async workflow demonstrates redux-observable dependencies.
@@ -212,7 +239,7 @@ Reducer injection does not automatically clear route state. This demo keeps Repo
 ## Demo Walkthrough
 
 1. Start at `/`.
-   Point out the dashboard cards and the pattern labels.
+   Point out the dashboard cards, the pattern labels, and the optional Workspace Status external-store demo.
 
 2. Open `/orders`.
    Explain that the route composes portfolio summary, orders, risk summary, and activity feed directly into layout slots.
@@ -244,6 +271,7 @@ Intentional simplifications:
 - No full design system.
 - No Plugin / Extension Points.
 - Reports uses a small local timeout for demo generation instead of an epic.
+- Workspace Status uses a tiny local external store only as an educational facade/adapter variant.
 
 ## Safety Note
 

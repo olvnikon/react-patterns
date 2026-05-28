@@ -38,6 +38,9 @@ importers:
       '@demo/feature-risk-summary':
         specifier: workspace:*
         version: link:../../packages/feature-risk-summary
+      '@demo/feature-workspace-status':
+        specifier: workspace:*
+        version: link:../../packages/feature-workspace-status
       '@demo/shared-api':
         specifier: workspace:*
         version: link:../../packages/shared-api
@@ -164,6 +167,12 @@ importers:
         version: 5.0.1
 
   packages/feature-risk-summary:
+    dependencies:
+      react:
+        specifier: '>=18.2.0'
+        version: 18.2.0
+
+  packages/feature-workspace-status:
     dependencies:
       react:
         specifier: '>=18.2.0'

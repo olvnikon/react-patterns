@@ -98,6 +98,11 @@ select {
   gap: 18px;
 }
 
+.dashboard-stack {
+  display: grid;
+  gap: 28px;
+}
+
 .page-section h1 {
   margin: 0;
   font-size: 2rem;

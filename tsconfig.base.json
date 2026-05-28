@@ -30,6 +30,9 @@
         "packages/feature-order-approval/src/index.ts"
       ],
       "@demo/feature-reports": ["packages/feature-reports/src/index.ts"],
+      "@demo/feature-workspace-status": [
+        "packages/feature-workspace-status/src/index.ts"
+      ],
       "@demo/feature-portfolio-summary": [
         "packages/feature-portfolio-summary/src/index.ts"
       ],
